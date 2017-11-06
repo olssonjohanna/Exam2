@@ -2,7 +2,7 @@ import socket
 import _thread
 import sys
 from server.Users import CollectionOfUsers
-
+#hej
 class SocketHandler:
     def __init__(self):
         self.serverSocket= socket.socket(socket.AF_INET,socket.SOCK_STREAM)
