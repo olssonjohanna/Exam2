@@ -47,6 +47,7 @@ class SocketHandler:
         return "succeed"
 
     def sendAndShowMsg(self, text):
+        print(text)
         for clientSock in self.list_of_known_clientSockets:
             clientSock.send(str.encode(text))
 
@@ -55,6 +56,7 @@ class SocketHandler:
 
     def startReceiving(self,clientSocket, clientAddr):
         resultOfLogin = self.listenToUnknownClinet(clientSocket,clientAddr)
+        print()
 
         if resultOfLogin !=False:
             username = resultOfLogin
@@ -63,12 +65,14 @@ class SocketHandler:
 
             self.list_of_known_clientSockets.append(clientSocket)
             self.list_of_known_clientAddr.append(clientAddr)
+            self.socketlist.append(clientSocket)
+            self.userlist.append(username)
 
             self.listenToknownClinet(clientSocket,clientAddr,username)
 
 
-            self.socketlist.append(clientSocket)
-            self.userlist.append(username)
+
+
 
          #   self.listOfSocketAndUser.append(clientSocket)
 
@@ -112,12 +116,14 @@ class SocketHandler:
         while True:
             try:
                 msg = clientSocket.recv(1024).decode()
+
                 self.sendAndShowMsg(username + ": " + msg)
             except:
                 self.list_of_known_clientSockets.remove(clientSocket)
                 self.list_of_known_clientAddr.remove(clientAddr)
                 self.sendAndShowMsg(username+" disconnected")
                 self.users.inactiveUser(username)
+
                 return
 
     def sendRecieve(self):
@@ -125,32 +131,21 @@ class SocketHandler:
             self.text = input()
             if self.text[:1] == "#":
                 self.sendMsgBySocketHandler()
-                print("Admin: " + self.text[1:])
             elif self.text[0:6] == "/close":
                 self.closeConnection()
             elif self.text[0:6] == "/kick ":
                 user_list = self.text[6:]
-                print(user_list)
                 self.kick(user_list)
             else:
                 print("Use command #/ in order to take action")
 
     def kick(self, user_list):
-        print("def kick")
-        #print(self.socketlist[self.userlist.index(self.userlist)])
-        print(user_list)
-        print(self.userlist)
         if user_list in self.userlist:
-            print("i if")
-            self.socketlist[self.userlist.index(self.userlist)].close()
+            self.socketlist[self.userlist.index(user_list)].close()
         else:
             print("false")
 
-        #for i in self.userlist:
-        #    print("I for loop")
-        #    if self.userlist[i] == user:
-        #        print("i if")
-        #        self.socketlist[i].close()
+
 
     def getPort(self):
 
@@ -160,7 +155,6 @@ class SocketHandler:
 
         def confirmPort():
             self.portToReturn = self.portEntry
-            print("hej")
 
         confirmPort()
 
