@@ -31,6 +31,8 @@ class GuiHandler:
 
         return self.ipAndPortToReturn
 
+
+
     def startMainGui(self):
 
         self.root = tkinter.Tk()
@@ -42,12 +44,18 @@ class GuiHandler:
         self.entryOfUser = tkinter.Entry(self.root)
         self.entryOfUser.grid(row = 1,column = 0)
         self.buttonToTrigg = tkinter.Button(self.root, text = "enter", command = self.sendMsgBySocketHandler)
+        self.entryOfUser.bind('<Return>', self.get_message_from_input_window_with_enter)
         self.buttonToTrigg.grid(row = 1,column = 1)
 
         self.root.mainloop()
 
     def sendMsgBySocketHandler(self):
         self.socketHandler.sendMsg(self.entryOfUser.get())
+        self.entryOfUser.delete(0,tkinter.END)
+
+    def get_message_from_input_window_with_enter(self,event):
+        self.sendMsgBySocketHandler()
+        return 'break'
 
     def startIntroGui(self):
         self.choiceRoot = tkinter.Tk()
