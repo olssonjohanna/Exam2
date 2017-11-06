@@ -1,4 +1,3 @@
-
 from client.GuiHandler import GuiHandler
 from client.SocketHandler import SocketHandler
 
