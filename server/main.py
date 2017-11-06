@@ -1,15 +1,16 @@
-from server.GuiHandler import GuiHandler
+
 from server.SocketHandler import SocketHandler
 
 socketHandler = SocketHandler()
-guiHandler = GuiHandler(socketHandler)
-socketHandler.setGuiHandler(guiHandler)
 
-port = guiHandler.getPort()
+port = SocketHandler.getPort(SocketHandler)
 resultOfBinding = socketHandler.startToAcceptConnection(port)
 
+
 if resultOfBinding == "failed":
-    guiHandler.showWarningMsg()
+    print ("failed port")
 else:
-    guiHandler.startGui()
+    start = SocketHandler
+    start.sendRecieve(socketHandler)
+    #GuiHandler.sendRecieve()
 
