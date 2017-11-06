@@ -12,6 +12,7 @@ class GuiHandler:
 
         def confirmPort():
             self.portToReturn = self.portEntry
+            print("hej")
 
         confirmPort()
 
