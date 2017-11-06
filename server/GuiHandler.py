@@ -1,8 +1,34 @@
-
+import tkinter
+import tkinter.messagebox
 
 class GuiHandler:
     def __init__(self,socketHandler_):
         self.socketHandler = socketHandler_
+
+    def sendRecieve(self):
+        while True:
+            self.text = input()
+            if self.text[:1] == "#":
+                self.sendMsgBySocketHandler()
+                print("Admin: " + self.text[1:])
+            elif self.text[0:6] == "/close":
+                self.closeConnection()
+            elif self.text[0:6] == "/kick ":
+                user = self.text[6:]
+                self.kick(user)
+            else:
+                print("Use command #/ in order to take action")
+
+    def kick(self, user):
+        lista = self.getList()
+        for i in lista:
+            if lista[i:1] == user:
+                lista[i:0].close()
+
+    def getList(self):
+        from server.SocketHandler import SocketHandler
+        list = SocketHandler().sendlist
+        return list
 
     def getPort(self):
 
@@ -18,24 +44,10 @@ class GuiHandler:
 
         return self.portToReturn
 
-    def startMainGui(self):
-
-        #här ska det in som kallar på funktion för closeConnection och sendMsgBySocketHandler
-
-
 
     def sendMsgBySocketHandler(self):
-        self.socketHandler.sendAndShowMsg("Admin: " + self.text)
+        self.socketHandler.sendAndShowMsg("Admin: " + self.text[1:])
 
     def closeConnection(self):
         self.socketHandler.closeEveryThing()
 
-    def startGui(self):
-        self.startMainGui()
-
-    def showMessage(self,text):
-        #tror denna är helt onödig(?)
-        self.chattContents.insert(tkinter.END,text+"\n")
-
-    def showWarningMsg(self):
-        tkinter.messagebox.showwarning(message="could not bind port")
